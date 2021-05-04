@@ -1,0 +1,137 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.aleal.kafka.connect</groupId>
+    <artifactId>error-handler-connect</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>error-handler-connect</name>
+    <description>A Kafka Connect Connector for error-handler-connect</description>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <properties>
+        <connect.component.owner.username>abrahamleal</connect.component.owner.username>
+        <connect.component.componentTypes>Sink</connect.component.componentTypes>
+    </properties>
+
+
+    <repositories>
+        <repository>
+            <id>confluent</id>
+            <name>Confluent</name>
+            <url>http://packages.confluent.io/maven/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>connect-api</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.5.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>1.15.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>kafka</artifactId>
+            <version>1.15.3</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.confluent</groupId>
+                <artifactId>kafka-connect-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>kafka-connect</goal>
+                        </goals>
+                        <configuration>
+                            <title>Kafka Connect Error Handler</title>
+                            <documentationUrl>https://docs.confluent.io/current/connect/connect-elasticsearch/docs/elasticsearch_connector.html</documentationUrl>
+                            <description>
+                                Handles errors from Kafka Connect Sinks
+                            </description>
+                            <!--<logo>logos/elasticsearch.jpg</logo>-->
+                            <ownerUsername>abrahamleal</ownerUsername>
+
+                            <supportProviderName>Confluent, Inc.</supportProviderName>
+                            <supportSummary>Confluent supports the Elasticsearch sink connector alongside community members as part of its Confluent Platform open source offering.</supportSummary>
+                            <supportUrl>https://docs.confluent.io/current/</supportUrl>
+                            <supportLogo>logos/confluent.png</supportLogo>
+
+                            <ownerType>person</ownerType>
+                            <ownerName>Abraham Leal</ownerName>
+                            <ownerUrl>https://github.com/abraham-leal</ownerUrl>
+                            <!--<ownerLogo>logos/confluent.png</ownerLogo>-->
+
+                            <dockerNamespace>confluentinc</dockerNamespace>
+                            <dockerName>cp-kafka-connect</dockerName>
+                            <dockerTag>${project.version}</dockerTag>
+
+                            <componentTypes>
+                                <componentType>sink</componentType>
+                            </componentTypes>
+
+                            <tags>
+                                <tag>Elastic</tag>
+                                <tag>elasticsearch</tag>
+                                <tag>search</tag>
+                                <tag>analytics</tag>
+                                <tag>log</tag>
+                            </tags>
+
+                            <requirements>
+                                <requirement>Elasticsearch 2.x, 5.x, or 6.x</requirement>
+                            </requirements>
+
+                            <deliveryGuarantee>
+                                <deliveryGuarantee>exactlyOnce</deliveryGuarantee>
+                            </deliveryGuarantee>
+
+                            <confluentControlCenterIntegration>true</confluentControlCenterIntegration>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
