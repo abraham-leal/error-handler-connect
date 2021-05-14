@@ -6,7 +6,7 @@ COPY . /home/appuser
 ENV JAVA_HOME="/usr/lib/jvm/zulu-11"
 RUN yum install -y maven
 RUN mvn clean compile io.confluent:kafka-connect-maven-plugin:kafka-connect
-COPY target/components/packages/abrahamleal-error-handler-connect-1.0-SNAPSHOT/abrahamleal-error-handler-connect-1.0-SNAPSHOT /usr/share/confluent-hub-components/
+COPY target/components/error-handler-connect-1.0-SNAPSHOT.jar /usr/share/confluent-hub-components/error-handler/
 
 USER appuser
 

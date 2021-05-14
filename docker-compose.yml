@@ -37,7 +37,7 @@ services:
 
   connect:
     hostname: connect
-    image: abrahamleal/cp-kafka-connect-error-handler:1.0
+    image: abrahamleal/cp-kafka-connect-error-handler:latest
     links:
       - zookeeper
       - kafka

@@ -93,7 +93,6 @@ public class ErrorHandlerSinkConnectorIntegrationTest {
       log.error("Could not ensure creation of source|destination topics: {}", e.getLocalizedMessage());
     }
 
-
     RecordMetadata originalRecord = null;
     ConsumerRecord<String, String> relayedRecord = null;
 
