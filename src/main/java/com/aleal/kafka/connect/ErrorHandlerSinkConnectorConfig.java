@@ -58,7 +58,20 @@ public class ErrorHandlerSinkConnectorConfig extends AbstractConfig {
   public static final String CUSTOM_OFFSET_HEADER_DEFAULT = "";
   private static final String CUSTOM_OFFSET_HEADER_DISPLAY = "Custom Header Key Value for Offset";
 
-  public static final String RELAYER_PREFIX = "relayer.";
+  public static final String ERROR_HANDLER_RETRIES_CONFIG = "error.handler.retries";
+  private static final String ERROR_HANDLER_RETRIES_DOC =
+          "Amount of times the connector should repost the same message to the destination topic";
+  public static final int ERROR_HANDLER_RETRIES_DEFAULT = 5;
+  private static final String ERROR_HANDLER_RETRIES_DISPLAY = "Amount of retries for reposting a message";
+
+  public static final String MAX_SEEKING_BLOCK_MS_CONFIG = "max.seeking.block";
+  private static final String MAX_SEEKING_BLOCK_MS_DOC =
+          "Maximum amount of time the connector will wait to find an offset";
+  public static final int MAX_SEEKING_BLOCK_MS_DEFAULT = 30000;
+  private static final String MAX_SEEKING_BLOCK_MS_DISPLAY = "Max amount of time to block finding an offset";
+
+  public static final String ERROR_HANDLER_PREFIX = "error.handler.";
+  public static final String ERROR_HANDLER_PRODUCTION_PREFIX = "error.handler.producer.";
 
   public ErrorHandlerSinkConnectorConfig(Map<?, ?> originals) {
     super(config(), originals, false);
@@ -92,7 +105,10 @@ public class ErrorHandlerSinkConnectorConfig extends AbstractConfig {
   }
 
   public Map<String, Object> clientsConfig () {
-    return originalsWithPrefix(RELAYER_PREFIX);
+    return originalsWithPrefix(ERROR_HANDLER_PREFIX);
+  }
+  public Map<String, Object> producerOverrides () {
+    return originalsWithPrefix(ERROR_HANDLER_PRODUCTION_PREFIX);
   }
 
   public static ConfigDef config() {
@@ -171,6 +187,26 @@ public class ErrorHandlerSinkConnectorConfig extends AbstractConfig {
                 ++behaviorOrder,
                 ConfigDef.Width.SHORT,
                 CUSTOM_OFFSET_HEADER_DISPLAY
+        ).define(
+                ERROR_HANDLER_RETRIES_CONFIG,
+                Type.INT,
+                ERROR_HANDLER_RETRIES_DEFAULT,
+                Importance.LOW,
+                ERROR_HANDLER_RETRIES_DOC,
+                group,
+                ++behaviorOrder,
+                ConfigDef.Width.SHORT,
+                ERROR_HANDLER_RETRIES_DISPLAY
+        ).define(
+                MAX_SEEKING_BLOCK_MS_CONFIG,
+                Type.LONG,
+                MAX_SEEKING_BLOCK_MS_DEFAULT,
+                Importance.LOW,
+                MAX_SEEKING_BLOCK_MS_DOC,
+                group,
+                ++behaviorOrder,
+                ConfigDef.Width.SHORT,
+                MAX_SEEKING_BLOCK_MS_DISPLAY
         );
   }
 }

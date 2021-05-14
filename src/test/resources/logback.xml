@@ -9,4 +9,6 @@
     </root>
     <logger name="com.aleal.kafka.connect" level="TRACE" />
     <logger name="org.reflections" level="ERROR"/>
+    <logger name="org.testcontainers" level="INFO"/>
+    <logger name="com.github.dockerjava" level="WARN"/>
 </configuration>

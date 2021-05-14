@@ -1,6 +1,4 @@
 .idea/
-Dockerfile
 bin/
 config/
-docker-compose.yml
 target/
