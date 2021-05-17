@@ -25,6 +25,16 @@
     </properties>
 
 
+    <profiles>
+        <profile>
+            <id>dockerBuild</id>
+            <build>
+                <directory>./build</directory>
+            </build>
+        </profile>
+    </profiles>
+
+
     <repositories>
         <repository>
             <id>confluent</id>
