@@ -50,15 +50,15 @@ public class ErrorHandlerSinkConnectorIntegrationTest {
     connectConfigs.put("CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR","1");
     connectConfigs.put("CONNECT_STATUS_STORAGE_TOPIC","docker-connect-status");
     connectConfigs.put("CONNECT_STATUS_STORAGE_REPLICATION_FACTOR","1");
-    connectConfigs.put("CONNECT_KEY_CONVERTER","org.apache.kafka.connect.json.JsonConverter");
-    connectConfigs.put("CONNECT_VALUE_CONVERTER","org.apache.kafka.connect.json.JsonConverter");
+    connectConfigs.put("CONNECT_KEY_CONVERTER","org.apache.kafka.connect.storage.StringConverter");
+    connectConfigs.put("CONNECT_VALUE_CONVERTER","org.apache.kafka.connect.storage.StringConverter");
 
     return connectConfigs;
   }
 
   @ClassRule
   @SuppressWarnings({"unchecked"})
-  public GenericContainer kconnect = new GenericContainer(DockerImageName.parse("abrahamleal/cp-kafka-connect-error-handler:1.0"))
+  public GenericContainer kconnect = new GenericContainer(DockerImageName.parse("abrahamleal/cp-kafka-connect-error-handler:latest"))
           .withNetwork(env)
           .dependsOn(kafka)
           .withImagePullPolicy(PullPolicy.alwaysPull())

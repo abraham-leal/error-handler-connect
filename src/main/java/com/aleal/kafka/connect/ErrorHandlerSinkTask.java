@@ -57,7 +57,6 @@ public class ErrorHandlerSinkTask extends SinkTask {
 
     for (SinkRecord error : records) {
       Headers thisErrorHeaders = error.headers();
-      log.info("Looking for custom headers: {},{},{}", custom_topic_header, custom_partition_header, custom_offset_header);
 
       String origMessageTopic = thisErrorHeaders.lastWithName(custom_topic_header) != null ? thisErrorHeaders.lastWithName(custom_topic_header).value().toString()
               : thisErrorHeaders.lastWithName("input_record_topic") != null ? thisErrorHeaders.lastWithName("input_record_topic").value().toString()
@@ -150,6 +149,8 @@ public class ErrorHandlerSinkTask extends SinkTask {
 
     ProducerRecord<Bytes, Bytes> tmpRecord;
 
+    log.info("Mappings: {}", srcDestTopicMapping);
+
     if (mode == Mode.REMAP) {
       tmpRecord = new ProducerRecord<>(srcDestTopicMapping.get(fetchedRecord.topic()),
               fetchedRecord.key(), fetchedRecord.value());
@@ -216,7 +217,7 @@ public class ErrorHandlerSinkTask extends SinkTask {
 
   private void setRuntimeConfigs() {
     // Set Mode
-    if (this.config.getString(ErrorHandlerSinkConnectorConfig.MODE_CONFIG).equalsIgnoreCase("resend")) {
+    if (config.getString(ErrorHandlerSinkConnectorConfig.MODE_CONFIG).equalsIgnoreCase("resend")) {
       this.mode = Mode.RESEND;
       log.info("Setting mode to: resend");
     } else {
@@ -225,16 +226,16 @@ public class ErrorHandlerSinkTask extends SinkTask {
     }
 
     // Set topic lists
-    if (this.mode == Mode.REMAP) {
-      List<String> topicList = this.config.getList(ErrorHandlerSinkConnectorConfig.TOPICS_CONFIG);
-      List<String> destTopicList = this.config.getList(ErrorHandlerSinkConnectorConfig.TOPICS_DEST_CONFIG);
+    if (mode == Mode.REMAP) {
+      List<String> topicList = config.getList(ErrorHandlerSinkConnectorConfig.TOPICS_CONFIG);
+      List<String> destTopicList = config.getList(ErrorHandlerSinkConnectorConfig.TOPICS_DEST_CONFIG);
 
       for (int i=0; i <= topicList.size()-1; i++) {
         this.srcDestTopicMapping.put(topicList.get(i), destTopicList.get(i));
       }
     }
 
-    this.noRetriesTopic = this.config.getString(ErrorHandlerSinkConnectorConfig.NO_RETRIES_TOPIC_CONFIG);
+    this.noRetriesTopic = config.getString(ErrorHandlerSinkConnectorConfig.NO_RETRIES_TOPIC_CONFIG);
 
     // Set custom header values
     this.custom_topic_header = config.getString(ErrorHandlerSinkConnectorConfig.CUSTOM_TOPIC_HEADER_CONFIG);

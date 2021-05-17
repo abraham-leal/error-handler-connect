@@ -126,8 +126,8 @@ public class ErrorHandlerSinkConnectorIntegrationTestUtils {
             String joinedSrcTopics = String.join(",", topics);
             String joinedDestTopics = String.join(",", destinationTopics);
 
-            String connectorProperties = String.format("{ \"name\" : \"MyErrorHandlerConnector\", \"config\" : {\"relayer.bootstrap.servers\":\"%s\", " +
-                    "\"mode\":\"%s\", \"topics\":\"%s\", \"topics.destinations\":\"%s\", \"connector.class\": \"com.aleal.kafka.connect.ErrorHandlerSinkConnector\"}}",kafkaContainerAlias,mode, joinedSrcTopics, joinedDestTopics);
+            String connectorProperties = String.format("{ \"name\" : \"MyErrorHandlerConnector\", \"config\" : {\"error.handler.bootstrap.servers\":\"%s\", " +
+                    "\"mode\":\"%s\", \"topics\":\"%s\", \"topics.destinations\":\"%s\", \"connector.class\": \"com.aleal.kafka.connect.ErrorHandlerSinkConnector\"}}", kafkaContainerAlias, mode, joinedSrcTopics, joinedDestTopics);
             StringEntity body = new StringEntity(connectorProperties);
 
             httppost.setEntity(body);

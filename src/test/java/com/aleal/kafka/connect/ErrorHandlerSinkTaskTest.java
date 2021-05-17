@@ -12,7 +12,7 @@ public class ErrorHandlerSinkTaskTest {
 
     // Minimum config for remapping error handler
     Map<String, String> configs = new HashMap<>();
-    configs.put("relayer.bootstrap.servers", "localhost:9092");
+    configs.put("error.handler.bootstrap.servers", "localhost:9092");
     configs.put("mode", "remap");
     configs.put("topics", "sample");
     configs.put("topics.destinations", "sampleDest");
