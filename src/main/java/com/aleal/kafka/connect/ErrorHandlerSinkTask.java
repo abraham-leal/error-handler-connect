@@ -81,7 +81,7 @@ public class ErrorHandlerSinkTask extends SinkTask {
           log.debug("Processing error record from: {}", origMessageTopic);
         }
 
-        ProducerRecord<Bytes,Bytes> thisRecord = routeRecord(fetchRecord(origMessageTopic, origMessagePartition, origMessageOffset), currentRetries);
+        ProducerRecord<Bytes,Bytes> thisRecord = routeRecord(fetchRecord(origMessageTopic, origMessagePartition, origMessageOffset), error.topic(), currentRetries);
         if (thisRecord != null) {
           reroutedRecords.add(thisRecord);
         }
@@ -142,17 +142,15 @@ public class ErrorHandlerSinkTask extends SinkTask {
     return singleRecord;
   }
 
-  private ProducerRecord<Bytes,Bytes> routeRecord (ConsumerRecord<Bytes,Bytes> fetchedRecord, int retries) {
+  private ProducerRecord<Bytes,Bytes> routeRecord (ConsumerRecord<Bytes,Bytes> fetchedRecord, String origErrorTopic, int retries) {
     if (fetchedRecord == null) {
       return null;
     }
 
     ProducerRecord<Bytes, Bytes> tmpRecord;
-
-    log.info("Mappings: {}", srcDestTopicMapping);
-
+    
     if (mode == Mode.REMAP) {
-      tmpRecord = new ProducerRecord<>(srcDestTopicMapping.get(fetchedRecord.topic()),
+      tmpRecord = new ProducerRecord<>(srcDestTopicMapping.get(origErrorTopic),
               fetchedRecord.key(), fetchedRecord.value());
     } else {
       tmpRecord = new ProducerRecord<>(fetchedRecord.topic(),
